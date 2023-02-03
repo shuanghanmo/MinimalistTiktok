@@ -12,7 +12,7 @@ var LIST = [...]string{"/douyin/user/login", "/douyin/user/register"}
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		url := c.Request.RequestURI
+		url := c.Request.URL.Path
 		for i := 0; i < len(LIST); i++ {
 			if strings.HasPrefix(url, LIST[i]) {
 				c.Next()
