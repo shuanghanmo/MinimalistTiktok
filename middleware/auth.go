@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"MinimalistTiktok/service"
-	"MinimalistTiktok/utils"
+	"github.com/RaymondCode/simple-demo/service"
+	"github.com/RaymondCode/simple-demo/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
