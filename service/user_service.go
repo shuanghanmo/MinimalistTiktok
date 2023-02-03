@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/RaymondCode/simple-demo/dao"
-	"github.com/RaymondCode/simple-demo/utils"
+	"MinimalistTiktok/dao"
+	"MinimalistTiktok/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"log"
