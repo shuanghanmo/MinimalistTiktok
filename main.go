@@ -1,7 +1,7 @@
 package main
 
 import (
-	"MinimalistTiktok/middleware"
+	"github.com/RaymondCode/simple-demo/middleware"
 	"github.com/gin-gonic/gin"
 )
 

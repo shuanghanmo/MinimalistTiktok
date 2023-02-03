@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"MinimalistTiktok/dao"
-	"MinimalistTiktok/service"
+	"github.com/RaymondCode/simple-demo/dao"
+	"github.com/RaymondCode/simple-demo/service"
 	"github.com/gin-gonic/gin"
 )
 

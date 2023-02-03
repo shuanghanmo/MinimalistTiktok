@@ -1,8 +1,8 @@
 package service
 
 import (
-	"MinimalistTiktok/dao"
-	"MinimalistTiktok/utils"
+	"github.com/RaymondCode/simple-demo/dao"
+	"github.com/RaymondCode/simple-demo/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"log"
@@ -21,7 +21,7 @@ type UserLoginResponse struct {
 
 type UserInfoResponse struct {
 	Response
-	dao.UserInfo `json:"user_info"`
+	dao.UserInfo `json:"user"`
 }
 
 func Login(c *gin.Context) {

@@ -1,11 +1,11 @@
 package dao
 
 type UserInfo struct {
-	ID            int64  `gorm:"column:id"`
-	Name          string `gorm:"column:name"`
-	FollowCount   int64  `gorm:"column:follow_count"`
-	FollowerCount int64  `gorm:"column:follower_count"`
-	IsFollow      bool   `gorm:"column:is_follow"`
+	ID            int64  `gorm:"column:id" json:"id"`
+	Name          string `gorm:"column:name" json:"name"`
+	FollowCount   int64  `gorm:"column:follow_count" json:"follow_count"`
+	FollowerCount int64  `gorm:"column:follower_count" json:"follower_count"`
+	IsFollow      bool   `gorm:"column:is_follow" json:"is_follow"`
 }
 
 func (u UserInfo) TableName() string {

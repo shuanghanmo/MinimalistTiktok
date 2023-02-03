@@ -1,12 +1,10 @@
 package controller
 
 import (
-	"MinimalistTiktok/dao"
-	"MinimalistTiktok/service"
+	"github.com/RaymondCode/simple-demo/dao"
+	"github.com/RaymondCode/simple-demo/service"
 	"github.com/gin-gonic/gin"
 )
-
-var userIdSequence = int64(1)
 
 type UserLoginResponse struct {
 	service.Response

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"MinimalistTiktok/dao"
+	"github.com/RaymondCode/simple-demo/dao"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
