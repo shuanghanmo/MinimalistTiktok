@@ -87,7 +87,7 @@ func Register(c *gin.Context) {
 		return nil
 	})
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		c.JSON(http.StatusOK, Response{
 			StatusCode: 1,
 			StatusMsg:  "发生异常错误！",
