@@ -1,19 +1,19 @@
-package controller
+package service
 
 import (
-	"github.com/RaymondCode/simple-demo/service"
+	"MinimalistTiktok/dao"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type VideoListResponse struct {
-	service.Response
-	VideoList []service.Video `json:"video_list"`
+	Response
+	VideoList dao.Video `json:"video_list"`
 }
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
-	c.JSON(http.StatusOK, service.Response{
+	c.JSON(http.StatusOK, Response{
 		StatusCode: 0,
 		StatusMsg:  "该功能未完成",
 	})
@@ -22,9 +22,9 @@ func Publish(c *gin.Context) {
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
 	c.JSON(http.StatusOK, VideoListResponse{
-		Response: service.Response{
+		Response: Response{
 			StatusCode: 0,
 		},
-		VideoList: DemoVideos,
+		//VideoList: DemoVideos,
 	})
 }

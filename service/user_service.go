@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/RaymondCode/simple-demo/dao"
-	"github.com/RaymondCode/simple-demo/utils"
+	"MinimalistTiktok/dao"
+	"MinimalistTiktok/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"log"
@@ -21,7 +21,7 @@ type UserLoginResponse struct {
 
 type UserInfoResponse struct {
 	Response
-	User `json:"user"`
+	dao.UserInfo `json:"user_info"`
 }
 
 func Login(c *gin.Context) {
@@ -48,7 +48,7 @@ func Login(c *gin.Context) {
 }
 
 func put(key string, userInfo *dao.UserInfo) {
-	var userCache = User{
+	var userCache = dao.UserInfo{
 		userInfo.ID,
 		userInfo.Name,
 		userInfo.FollowCount,
@@ -107,9 +107,9 @@ func Register(c *gin.Context) {
 func GetUserInfo(c *gin.Context) {
 	token := c.Query("token")
 	info, _ := ConcurrentMap.Load(token)
-	user := info.(User)
+	userInfo := info.(dao.UserInfo)
 	c.JSON(http.StatusOK, UserInfoResponse{
 		Response: Response{StatusCode: 0, StatusMsg: "获取信息成功！"},
-		User:     user,
+		UserInfo: userInfo,
 	})
 }

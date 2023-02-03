@@ -1,8 +1,8 @@
 package controller
 
 import (
-	_ "github.com/RaymondCode/simple-demo/dao"
-	"github.com/RaymondCode/simple-demo/service"
+	"MinimalistTiktok/dao"
+	"MinimalistTiktok/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +16,7 @@ type UserLoginResponse struct {
 
 type UserResponse struct {
 	service.Response
-	User service.User `json:"user"`
+	User dao.UserInfo `json:"user_info"`
 }
 
 func Register(c *gin.Context) {
