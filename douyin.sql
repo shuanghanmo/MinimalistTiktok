@@ -1,60 +1,110 @@
-/*
- Navicat Premium Data Transfer
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: douyin
+-- ------------------------------------------------------
+-- Server version	8.0.28
 
- Source Server         : mysql
- Source Server Type    : MySQL
- Source Server Version : 50722
- Source Host           : localhost:3306
- Source Schema         : douyin
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- Target Server Type    : MySQL
- Target Server Version : 50722
- File Encoding         : 65001
+--
+-- Table structure for table `tb_user`
+--
 
- Date: 02/02/2023 20:24:46
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for tb_user
--- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
-CREATE TABLE `tb_user`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `pass_word` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `updated_at` datetime(0) NULL DEFAULT NULL,
-  `created_at` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_user` (
+  `id` bigint DEFAULT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `pass_word` varchar(50) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of tb_user
--- ----------------------------
-INSERT INTO `tb_user` VALUES (10, 'zhangsan', '031edf66974191f2a22999f36fa39079', '2023-02-02 18:00:42', '2023-02-02 18:00:42');
-INSERT INTO `tb_user` VALUES (11, 'lisi', '272420f6f0c0a818f050909b8ef709d5', '2023-02-02 18:23:50', '2023-02-02 18:23:50');
-INSERT INTO `tb_user` VALUES (12, '李四', '031edf66974191f2a22999f36fa39079', '2023-02-02 18:31:04', '2023-02-02 18:31:04');
+--
+-- Dumping data for table `tb_user`
+--
 
--- ----------------------------
--- Table structure for tb_user_info
--- ----------------------------
+LOCK TABLES `tb_user` WRITE;
+/*!40000 ALTER TABLE `tb_user` DISABLE KEYS */;
+INSERT INTO `tb_user` VALUES (10,'zhangsan','031edf66974191f2a22999f36fa39079','2023-02-02 18:00:42','2023-02-02 18:00:42'),(11,'lisi','272420f6f0c0a818f050909b8ef709d5','2023-02-02 18:23:50','2023-02-02 18:23:50'),(12,'李四','031edf66974191f2a22999f36fa39079','2023-02-02 18:31:04','2023-02-02 18:31:04');
+/*!40000 ALTER TABLE `tb_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_user_info`
+--
+
 DROP TABLE IF EXISTS `tb_user_info`;
-CREATE TABLE `tb_user_info`  (
-  `id` bigint(20) NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `follow_count` bigint(20) NULL DEFAULT 0,
-  `follower_count` bigint(255) NULL DEFAULT 0,
-  `is_follow` tinyint(1) NULL DEFAULT 0 COMMENT '0:未关注 1:已关注',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_user_info` (
+  `id` bigint DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `follow_count` bigint DEFAULT NULL,
+  `follower_count` bigint DEFAULT NULL,
+  `is_follow` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of tb_user_info
--- ----------------------------
-INSERT INTO `tb_user_info` VALUES (10, 'douyin_simple_2023:02:02_zhangsan', 0, 0, 0);
-INSERT INTO `tb_user_info` VALUES (11, 'douyin_simple_2023:02:02_lisi', 0, 0, 0);
-INSERT INTO `tb_user_info` VALUES (12, 'douyin_simple_2023:02:02_李四', 0, 0, 0);
+--
+-- Dumping data for table `tb_user_info`
+--
 
-SET FOREIGN_KEY_CHECKS = 1;
+LOCK TABLES `tb_user_info` WRITE;
+/*!40000 ALTER TABLE `tb_user_info` DISABLE KEYS */;
+INSERT INTO `tb_user_info` VALUES (10,'douyin_simple_2023:02:02_zhangsan',0,0,0),(11,'douyin_simple_2023:02:02_lisi',0,0,0),(12,'douyin_simple_2023:02:02_李四',0,0,0);
+/*!40000 ALTER TABLE `tb_user_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_video`
+--
+
+DROP TABLE IF EXISTS `tb_video`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_video` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `play_url` varchar(255) NOT NULL,
+  `cover_url` varchar(255) NOT NULL,
+  `favorite_count` bigint NOT NULL,
+  `comment_count` bigint NOT NULL,
+  `is_favorite` tinyint(1) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tb_video_id_uindex` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_video`
+--
+
+LOCK TABLES `tb_video` WRITE;
+/*!40000 ALTER TABLE `tb_video` DISABLE KEYS */;
+INSERT INTO `tb_video` VALUES (1,12,'https://www.w3schools.com/html/movie.mp4','1',22,33,1,'1');
+/*!40000 ALTER TABLE `tb_video` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-02-03 23:30:21
