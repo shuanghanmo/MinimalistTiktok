@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/RaymondCode/simple-demo/service"
+	"MinimalistTiktok/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"regexp"
