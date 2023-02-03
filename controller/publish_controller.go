@@ -1,15 +1,9 @@
 package controller
 
 import (
-	"github.com/RaymondCode/simple-demo/dao"
-	"github.com/RaymondCode/simple-demo/service"
+	"MinimalistTiktok/service"
 	"github.com/gin-gonic/gin"
 )
-
-type VideoListResponse struct {
-	service.Response
-	VideoList dao.Video `json:"video_list"`
-}
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
