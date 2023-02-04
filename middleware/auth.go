@@ -8,10 +8,7 @@ import (
 	"strings"
 )
 
-var LIST = [...]string{"/douyin/user/login",
-	"/douyin/user/register",
-	"/douyin/feed/",
-	"/douyin/publish/list/"}
+var LIST = [...]string{"/douyin/user/login", "/douyin/user/register", "/douyin/feed/", "/douyin/publish/list/"}
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -23,6 +20,9 @@ func Auth() gin.HandlerFunc {
 			}
 		}
 		token := c.Query("token")
+		if len(token) == 0 {
+			token = c.PostForm("token")
+		}
 		id := c.Query("id")
 		_, claim, err := utils.ParseToken(token)
 		// 检测token是否过期
@@ -38,6 +38,7 @@ func Auth() gin.HandlerFunc {
 				c.Abort()
 				return
 			}
+
 		}
 		c.Next()
 	}
