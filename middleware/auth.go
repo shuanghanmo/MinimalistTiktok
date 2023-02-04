@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-var LIST = [...]string{"/douyin/user/login", "/douyin/user/register", "/douyin/feed/", "/douyin/publish/list/"}
+var LIST = [...]string{"/douyin/user/login",
+	"/douyin/user/register",
+	"/douyin/feed/",
+	"/douyin/publish/list/"}
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
