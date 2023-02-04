@@ -17,6 +17,11 @@ type Claims struct {
 	gojwt.StandardClaims
 }
 
+//type Claims struct {
+//	uId int64
+//	gojwt.StandardClaims
+//}
+
 // Award 生成Token
 func Award(uid int64) (string, error) {
 	// 过期时间设置为3小时
