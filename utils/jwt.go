@@ -13,7 +13,7 @@ func init() {
 }
 
 type Claims struct {
-	uId int64
+	Uid int64
 	gojwt.StandardClaims
 }
 
@@ -22,7 +22,7 @@ func Award(uid int64) (string, error) {
 	// 过期时间设置为3小时
 	expireTime := time.Now().Add(3 * time.Hour)
 	claims := &Claims{
-		uId: uid,
+		Uid: uid,
 		StandardClaims: gojwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			IssuedAt:  time.Now().Unix(),
