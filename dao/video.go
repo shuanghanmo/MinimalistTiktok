@@ -28,6 +28,12 @@ type VideoList struct {
 	Title         string   `gorm:"column:title" json:"title"`
 }
 
+type UserFavorVideo struct {
+	UserId   int64 `gorm:"column:user_id"`
+	VideoId  int64 `gorm:"column:video_id"`
+	IsDelete bool  `gorm:"column:is_deleted"`
+}
+
 func (v Video) TableName() string {
 	return "tb_video"
 }
@@ -79,9 +85,16 @@ func PlusOneFavorByUserIdAndVideoId(userId int64, videoId int64) error {
 		if err := tx.Exec("UPDATE tb_video SET favorite_count=favorite_count+1 WHERE id = ?", videoId).Error; err != nil {
 			return err
 		}
-		//功能未完善，需要先查询数据库中是否有记录，有就将is_deleted设为1，没有则插入
-		if err := tx.Exec("INSERT INTO `user_favor_videos` (`user_id`,`video_id`,'is_deleted') VALUES (?,?,0)", userId, videoId).Error; err != nil {
-			return err
+		var count int64
+		tx.Table("user_favor_videos").Where("user_id = ? and video_id = ?", userId, videoId).Count(&count)
+		if count == 0 {
+			if err := tx.Exec("INSERT INTO `user_favor_videos` (`user_id`,`video_id`,`is_deleted`) VALUES (?,?,0)", userId, videoId).Error; err != nil {
+				return err
+			}
+		} else {
+			if err := tx.Exec("UPDATE user_favor_videos SET is_deleted = 0 WHERE `user_id` = ? AND `video_id` = ?", userId, videoId).Error; err != nil {
+				return err
+			}
 		}
 		return nil
 	})
@@ -109,4 +122,10 @@ func IsFavorVideo(userId int64, videoId int64) bool {
 		return true
 	}
 	return false
+}
+
+func QueryByVideoIdAndUserId(videoId int64, userId int64) int64 {
+	var count int64
+	DB.Table("user_favor_videos").Where("user_id = ? and video_id = ? and is_deleted = 0", userId, videoId).Count(&count)
+	return count
 }

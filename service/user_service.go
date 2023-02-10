@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -112,4 +113,53 @@ func GetUserInfo(c *gin.Context) {
 		Response: Response{StatusCode: 0, StatusMsg: "获取信息成功！"},
 		UserInfo: userInfo,
 	})
+}
+
+/**
+点赞操作
+*/
+func ThumbsUp(c *gin.Context) {
+	token := c.Query("token")
+	videoIdStr := c.Query("video_id")
+	info, _ := ConcurrentMap.Load(token)
+	userInfo := info.(dao.UserInfo)
+	userId := userInfo.ID
+	videoId, err := strconv.ParseInt(videoIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusOK, Response{
+			StatusCode: 1,
+			StatusMsg:  "信息格式转化错误！",
+		})
+		return
+	}
+	count := dao.QueryByVideoIdAndUserId(videoId, userId)
+	if count == 0 {
+		err := dao.PlusOneFavorByUserIdAndVideoId(userId, videoId)
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusOK, Response{
+				StatusCode: 1,
+				StatusMsg:  "发生异常错误，请稍后访问！",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, Response{
+			StatusCode: 0,
+			StatusMsg:  "点赞成功！",
+		})
+	} else {
+		err := dao.MinusOneFavorByUserIdAndVideoId(userId, videoId)
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusOK, Response{
+				StatusCode: 1,
+				StatusMsg:  "发生异常错误，请稍后访问！",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, Response{
+			StatusCode: 0,
+			StatusMsg:  "取消点赞成功！",
+		})
+	}
 }
