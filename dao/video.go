@@ -2,7 +2,6 @@ package dao
 
 import (
 	"fmt"
-	"gorm.io/gorm"
 	_ "gorm.io/gorm"
 )
 
@@ -79,42 +78,6 @@ func QueryPublishListByUserId(userId int64) []VideoList {
 	return videoList
 }
 
-// PlusOneFavorByUserIdAndVideoId 增加一个赞
-func PlusOneFavorByUserIdAndVideoId(userId int64, videoId int64) error {
-	err := DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Exec("UPDATE tb_video SET favorite_count=favorite_count+1 WHERE id = ?", videoId).Error; err != nil {
-			return err
-		}
-		var count int64
-		tx.Table("user_favor_videos").Where("user_id = ? and video_id = ?", userId, videoId).Count(&count)
-		if count == 0 {
-			if err := tx.Exec("INSERT INTO `user_favor_videos` (`user_id`,`video_id`,`is_deleted`) VALUES (?,?,0)", userId, videoId).Error; err != nil {
-				return err
-			}
-		} else {
-			if err := tx.Exec("UPDATE user_favor_videos SET is_deleted = 0 WHERE `user_id` = ? AND `video_id` = ?", userId, videoId).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
-	return err
-}
-
-// MinusOneFavorByUserIdAndVideoId 减少一个赞
-func MinusOneFavorByUserIdAndVideoId(userId int64, videoId int64) error {
-	return DB.Transaction(func(tx *gorm.DB) error {
-		//执行-1之前需要先判断是否合法（不能被减少为负数
-		if err := tx.Exec("UPDATE tb_video SET favorite_count = favorite_count - 1 WHERE id = ? AND favorite_count > 0", videoId).Error; err != nil {
-			return err
-		}
-		if err := tx.Exec("UPDATE user_favor_videos SET is_deleted = 1 WHERE `user_id` = ? AND `video_id` = ?", userId, videoId).Error; err != nil {
-			return err
-		}
-		return nil
-	})
-}
-
 func IsFavorVideo(userId int64, videoId int64) bool {
 	var count int64
 	DB.Table("user_favor_videos").Where("`user_id` = ? AND `video_id` = ? AND `is_deleted` = 0", userId, videoId).Count(&count)
@@ -122,10 +85,4 @@ func IsFavorVideo(userId int64, videoId int64) bool {
 		return true
 	}
 	return false
-}
-
-func QueryByVideoIdAndUserId(videoId int64, userId int64) int64 {
-	var count int64
-	DB.Table("user_favor_videos").Where("user_id = ? and video_id = ? and is_deleted = 0", userId, videoId).Count(&count)
-	return count
 }

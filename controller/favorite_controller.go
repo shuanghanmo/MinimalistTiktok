@@ -6,5 +6,5 @@ import (
 )
 
 func FavoriteAction(c *gin.Context) {
-	service.ThumbsUp(c)
+	service.FavoriteAction(c)
 }
