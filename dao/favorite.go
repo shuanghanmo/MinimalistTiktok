@@ -3,9 +3,13 @@ package dao
 import "gorm.io/gorm"
 
 type Favorite struct {
-	userId    int64 `gorm:"column:user_id" json:"user_id,omitempty"`
-	videoId   int64 `gorm:"column:video_id" json:"video_id,omitempty"`
-	isDeleted bool  `gorm:"column:is_deleted" json:"is_deleted"`
+	UserId    int64 `gorm:"column:user_id" json:"user_id,omitempty"`
+	VideoId   int64 `gorm:"column:video_id" json:"video_id,omitempty"`
+	IsDeleted bool  `gorm:"column:is_deleted" json:"is_deleted"`
+}
+
+func (f Favorite) TableName() string {
+	return "user_favor_videos"
 }
 
 // PlusOneFavorByUserIdAndVideoId 增加一个赞
@@ -42,4 +46,42 @@ func MinusOneFavorByUserIdAndVideoId(userId int64, videoId int64) error {
 		}
 		return nil
 	})
+}
+
+func IsFavorVideo(userId int64, videoId int64) bool {
+	var count int64
+	DB.Table("user_favor_videos").Where("`user_id` = ? AND `video_id` = ? AND `is_deleted` = 0", userId, videoId).Count(&count)
+	if count > 0 {
+		return true
+	}
+	return false
+}
+
+// 通过userId查询点赞视频列表
+func QueryFavorVideosByUserId(userId int64) []VideoList {
+	var favorites []Favorite
+	var video Video
+	var userInfo UserInfo
+
+	result := DB.Select("video_id").Where("`user_id` = ? and `is_deleted` = 0", userId).Find(&favorites)
+
+	n := result.RowsAffected
+	videoList := make([]VideoList, n)
+
+	var i int64
+	for i = 0; i < n; i++ {
+		DB.Select("id", "user_id", "play_url", "cover_url", "favorite_count", "comment_count", "title").Where("id = ?", favorites[i].VideoId).Find(&video)
+		DB.First(&userInfo, video.UserId)
+
+		videoList[i].Id = video.Id
+		videoList[i].Author = userInfo
+		videoList[i].PlayUrl = video.PlayUrl
+		videoList[i].CoverUrl = video.CoverUrl
+		videoList[i].FavoriteCount = video.FavoriteCount
+		videoList[i].CommentCount = video.CommentCount
+		videoList[i].IsFavorite = true
+		videoList[i].Title = video.Title
+	}
+
+	return videoList
 }

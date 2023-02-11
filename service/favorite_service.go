@@ -57,5 +57,15 @@ func FavoriteAction(c *gin.Context) {
 }
 
 func FavoriteList(c *gin.Context) {
+	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
 
+	var videoList = dao.QueryFavorVideosByUserId(userId)
+
+	c.JSON(http.StatusOK, VideoListResponse{
+		Response: Response{
+			StatusCode: 0,
+			StatusMsg:  "喜欢列表已刷新",
+		},
+		VideoList: videoList,
+	})
 }

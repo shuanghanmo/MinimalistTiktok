@@ -12,8 +12,7 @@ type Video struct {
 	CoverUrl      string `gorm:"column:cover_url" json:"cover_url,omitempty"`
 	FavoriteCount int64  `gorm:"column:favorite_count" json:"favorite_count,omitempty"`
 	CommentCount  int64  `gorm:"column:comment_count" json:"comment_count,omitempty"`
-	//IsFavorite    bool   `gorm:"column:is_favorite" json:"is_favorite,omitempty"`
-	Title string `gorm:"column:title"`
+	Title         string `gorm:"column:title"`
 }
 
 type VideoList struct {
@@ -76,13 +75,4 @@ func QueryPublishListByUserId(userId int64) []VideoList {
 	}
 
 	return videoList
-}
-
-func IsFavorVideo(userId int64, videoId int64) bool {
-	var count int64
-	DB.Table("user_favor_videos").Where("`user_id` = ? AND `video_id` = ? AND `is_deleted` = 0", userId, videoId).Count(&count)
-	if count > 0 {
-		return true
-	}
-	return false
 }

@@ -8,3 +8,7 @@ import (
 func FavoriteAction(c *gin.Context) {
 	service.FavoriteAction(c)
 }
+
+func FavoriteList(c *gin.Context) {
+	service.FavoriteList(c)
+}
