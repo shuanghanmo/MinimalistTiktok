@@ -81,7 +81,6 @@ func Publish(c *gin.Context) {
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
 	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
-	//token := c.Query("token")
 
 	var videoList = dao.QueryPublishListByUserId(userId)
 
