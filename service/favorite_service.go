@@ -22,7 +22,7 @@ func FavoriteAction(c *gin.Context) {
 		})
 		return
 	}
-	//flag := dao.IsFavorVideo(videoId, userId)
+
 	actionTypestr := c.Query("action_type")
 	actionType, err := strconv.ParseInt(actionTypestr, 10, 64)
 	if actionType == 1 {
