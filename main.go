@@ -27,7 +27,7 @@ func main() {
 	// 使用权限验证中间件
 	r.Use(middleware.Auth())
 	InitRouter(r)
-	err := r.Run(":8888")
+	err := r.Run(":" + config.ServerPort)
 	if err != nil {
 		return
 	}

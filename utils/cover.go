@@ -2,6 +2,7 @@ package utils
 
 import (
 	"MinimalistTiktok/config"
+	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -11,8 +12,6 @@ func GetCover(videoFileName string) (string, string) {
 	videoNameList := strings.Split(videoFileName, ".")
 	filePath := config.VideosImagePath + videoFileName
 	coverPath := config.VideosImagePath + videoNameList[0] + ".jpeg"
-	println(filePath)
-	println(coverPath)
 	cmd := exec.Command("ffmpeg", "-i", filePath, "-ss", "1", "-f",
 		"image2", "-frames:v", "1", coverPath)
 
@@ -21,9 +20,9 @@ func GetCover(videoFileName string) (string, string) {
 		println(err)
 		return "", ""
 	}
-
-	println("after cmd")
+	filePath = fmt.Sprintf("http://%s:%s/%s",
+		config.ServerIP, config.ServerPort, filePath[2:])
+	coverPath = fmt.Sprintf("http://%s:%s/%s",
+		config.ServerIP, config.ServerPort, coverPath[2:])
 	return filePath, coverPath
 }
-
-
