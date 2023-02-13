@@ -21,6 +21,13 @@ type VideoListResponse struct {
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")
 	_, claim, err := utils.ParseToken(token)
+	if err != nil {
+		c.JSON(http.StatusOK, Response{
+			StatusCode: 1,
+			StatusMsg:  "token error",
+		})
+		return
+	}
 	userId := claim.Uid
 	data, err := c.FormFile("data")
 
