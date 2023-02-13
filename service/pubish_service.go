@@ -50,7 +50,7 @@ func Publish(c *gin.Context) {
 		return
 	}
 
-	coverPath, videoPath := utils.GetCover(finalName)
+	videoPath, coverPath := utils.GetCover(finalName)
 
 	// 存数据库
 	video := dao.Video{
