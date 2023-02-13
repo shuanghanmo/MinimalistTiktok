@@ -54,12 +54,11 @@ func Publish(c *gin.Context) {
 
 	// 存数据库
 	video := dao.Video{
-		Id:       videoId,
-		UserId:   userId,
-		PlayUrl:  videoPath,
-		CoverUrl: coverPath,
-		Title:    title,
-		//IsFavorite:    false,
+		Id:            videoId,
+		UserId:        userId,
+		PlayUrl:       videoPath,
+		CoverUrl:      coverPath,
+		Title:         title,
 		FavoriteCount: 0,
 		CommentCount:  0,
 	}
