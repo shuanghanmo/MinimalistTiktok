@@ -51,3 +51,12 @@ func UnFollowAction(userId int64, toUserId int64) error {
 		return nil
 	})
 }
+
+func IsFollow(userId int64, toUserId int64) bool {
+	var count int64
+	DB.Table("tb_relation").Where("`user_id` = ? AND `to_user_id` = ? AND `is_deleted` = 0", userId, toUserId).Count(&count)
+	if count > 0 {
+		return true
+	}
+	return false
+}

@@ -12,7 +12,7 @@ type Comment struct {
 
 type CommentList struct {
 	Id         int64     `json:"id,omitempty"`
-	User       UserInfo  `json:"userInfo"`
+	User       UserInfos `json:"userInfo"`
 	Content    string    `json:"content,omitempty"`
 	CreateDate time.Time `json:"create_date,omitempty"`
 }
@@ -21,9 +21,10 @@ func (c Comment) TableName() string {
 	return "tb_comment"
 }
 
-func QueryCommentListByVideoId(videoId int64) []CommentList {
+func QueryCommentList(userId int64, videoId int64) []CommentList {
 	var comments []Comment
-	var userInfo UserInfo
+	var userInfos UserInfos
+	var flag bool
 
 	result := DB.Select("id", "user_id", "content", "create_date").Where("video_id = ?", videoId).Find(&comments)
 
@@ -35,9 +36,12 @@ func QueryCommentListByVideoId(videoId int64) []CommentList {
 
 	var i int64
 	for i = 0; i < n; i++ {
+		var userInfo UserInfo
 		commentList[i].Id = comments[i].Id
-		DB.First(&userInfo, comments[i].UserId)
-		commentList[i].User = userInfo
+		DB.Where("id = ?", comments[i].UserId).Find(&userInfo)
+		flag = IsFollow(userId, comments[i].UserId)
+		userInfos = SaveUserInfos(userInfo, flag)
+		commentList[i].User = userInfos
 		commentList[i].Content = comments[i].Content
 		commentList[i].CreateDate = comments[i].CreateDate
 	}

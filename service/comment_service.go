@@ -13,6 +13,11 @@ func CommentAction(c *gin.Context) {
 }
 
 func CommentList(c *gin.Context) {
+	token := c.Query("token")
+	info, _ := ConcurrentMap.Load(token)
+	userInfo := info.(dao.UserInfo)
+	userId := userInfo.ID
+
 	videoIdStr := c.Query("video_id")
 	videoId, err := strconv.ParseInt(videoIdStr, 10, 64)
 	if err != nil {
@@ -23,7 +28,7 @@ func CommentList(c *gin.Context) {
 		return
 	}
 
-	var commentList = dao.QueryCommentListByVideoId(videoId)
+	var commentList = dao.QueryCommentList(userId, videoId)
 
 	c.JSON(http.StatusOK, config.CommentListResponse{
 		Response: config.Response{
