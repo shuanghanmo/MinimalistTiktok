@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `tb_comment`
+--
+
+DROP TABLE IF EXISTS `tb_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_comment` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `video_id` bigint NOT NULL,
+  `content` varchar(500) DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_comment`
+--
+
+LOCK TABLES `tb_comment` WRITE;
+/*!40000 ALTER TABLE `tb_comment` DISABLE KEYS */;
+INSERT INTO `tb_comment` VALUES (1,12,1,'123123','2023-02-14');
+/*!40000 ALTER TABLE `tb_comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_user`
 --
 
@@ -86,7 +113,7 @@ CREATE TABLE `tb_video` (
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tb_video_id_uindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=446249720474553858 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=447651794798038530 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +122,7 @@ CREATE TABLE `tb_video` (
 
 LOCK TABLES `tb_video` WRITE;
 /*!40000 ALTER TABLE `tb_video` DISABLE KEYS */;
-INSERT INTO `tb_video` VALUES (1,12,'https://www.w3schools.com/html/movie.mp4','https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg',26,33,'1'),(3,12,'http://localhost:8888/static/bear.mp4','http://10.0.2.2:8888/static/bear-1283347_1280.jpg',2,1,'1'),(446249720474553857,12,'','',0,0,'111');
+INSERT INTO `tb_video` VALUES (1,12,'https://www.w3schools.com/html/movie.mp4','https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg',31,33,'1'),(3,12,'http://localhost:8888/static/bear.mp4','http://10.0.2.2:8888/static/bear-1283347_1280.jpg',2,1,'1'),(447651794798038529,12,'','',0,0,'123');
 /*!40000 ALTER TABLE `tb_video` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +136,7 @@ DROP TABLE IF EXISTS `user_favor_videos`;
 CREATE TABLE `user_favor_videos` (
   `user_id` bigint DEFAULT NULL,
   `video_id` bigint DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL COMMENT '0-已删除，1-未删除'
+  `is_deleted` tinyint(1) NOT NULL COMMENT '0-未删除，1-已删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -119,7 +146,7 @@ CREATE TABLE `user_favor_videos` (
 
 LOCK TABLES `user_favor_videos` WRITE;
 /*!40000 ALTER TABLE `user_favor_videos` DISABLE KEYS */;
-INSERT INTO `user_favor_videos` VALUES (12,1,0);
+INSERT INTO `user_favor_videos` VALUES (12,1,0),(12,3,0);
 /*!40000 ALTER TABLE `user_favor_videos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -132,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-05 15:06:45
+-- Dump completed on 2023-02-14 13:53:37

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"MinimalistTiktok/config"
 	"MinimalistTiktok/dao"
 	"MinimalistTiktok/utils"
 	"github.com/gin-gonic/gin"
@@ -14,13 +15,13 @@ import (
 var ConcurrentMap = sync.Map{}
 
 type UserLoginResponse struct {
-	Response
+	config.Response
 	UserId int64  `json:"user_id,omitempty"`
 	Token  string `json:"token"`
 }
 
 type UserInfoResponse struct {
-	Response
+	config.Response
 	dao.UserInfo `json:"user"`
 }
 
@@ -30,7 +31,7 @@ func Login(c *gin.Context) {
 	password = utils.Md5Crypt(password, "douyin_simple")
 	user := dao.QueryByUser(username, password)
 	if user.ID == 0 {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  "帐号或密码错误！",
 		})
@@ -41,7 +42,7 @@ func Login(c *gin.Context) {
 	put(token, userInfo)
 	// 保存用户对应的信息
 	c.JSON(http.StatusOK, UserLoginResponse{
-		Response: Response{StatusCode: 0, StatusMsg: "登录成功！"},
+		Response: config.Response{StatusCode: 0, StatusMsg: "登录成功！"},
 		UserId:   user.ID,
 		Token:    token,
 	})
@@ -64,7 +65,7 @@ func Register(c *gin.Context) {
 	user := dao.QueryByUserName(username)
 	var userInfo *dao.UserInfo
 	if user.ID != 0 {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  "该用户名已注册！",
 		})
@@ -88,7 +89,7 @@ func Register(c *gin.Context) {
 	})
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  "发生异常错误！",
 		})
@@ -98,7 +99,7 @@ func Register(c *gin.Context) {
 	// 保存用户对应的信息
 	put(token, userInfo)
 	c.JSON(http.StatusOK, UserLoginResponse{
-		Response: Response{StatusCode: 0, StatusMsg: "注册成功！"},
+		Response: config.Response{StatusCode: 0, StatusMsg: "注册成功！"},
 		UserId:   user.ID,
 		Token:    token,
 	})
@@ -109,7 +110,7 @@ func GetUserInfo(c *gin.Context) {
 	info, _ := ConcurrentMap.Load(token)
 	userInfo := info.(dao.UserInfo)
 	c.JSON(http.StatusOK, UserInfoResponse{
-		Response: Response{StatusCode: 0, StatusMsg: "获取信息成功！"},
+		Response: config.Response{StatusCode: 0, StatusMsg: "获取信息成功！"},
 		UserInfo: userInfo,
 	})
 }
