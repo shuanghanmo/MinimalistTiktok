@@ -43,6 +43,30 @@ INSERT INTO `tb_comment` VALUES (1,12,1,'123123','2023-02-14');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tb_relation`
+--
+
+DROP TABLE IF EXISTS `tb_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_relation` (
+  `user_id` bigint NOT NULL,
+  `to_user_id` bigint NOT NULL,
+  `is_deleted` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_relation`
+--
+
+LOCK TABLES `tb_relation` WRITE;
+/*!40000 ALTER TABLE `tb_relation` DISABLE KEYS */;
+INSERT INTO `tb_relation` VALUES (12,11,0);
+/*!40000 ALTER TABLE `tb_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_user`
 --
 
@@ -92,7 +116,7 @@ CREATE TABLE `tb_user_info` (
 
 LOCK TABLES `tb_user_info` WRITE;
 /*!40000 ALTER TABLE `tb_user_info` DISABLE KEYS */;
-INSERT INTO `tb_user_info` VALUES (10,'douyin_simple_2023:02:02_zhangsan',0,0,0),(11,'douyin_simple_2023:02:02_lisi',0,0,0),(12,'douyin_simple_2023:02:02_李四',0,0,0);
+INSERT INTO `tb_user_info` VALUES (10,'douyin_simple_2023:02:02_zhangsan',0,0,0),(11,'douyin_simple_2023:02:02_lisi',0,1,0),(12,'douyin_simple_2023:02:02_李四',1,0,0);
 /*!40000 ALTER TABLE `tb_user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,4 +183,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-14 13:53:37
+-- Dump completed on 2023-02-14 20:13:32
