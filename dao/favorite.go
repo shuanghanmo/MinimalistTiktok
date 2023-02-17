@@ -60,8 +60,8 @@ func IsFavorVideo(userId int64, videoId int64) bool {
 // 通过userId查询点赞视频列表
 func QueryFavorVideosByUserId(userId int64) []VideoList {
 	var favorites []Favorite
-	var video Video
-	var userInfo UserInfo
+	var userInfos UserInfos
+	var flag bool
 
 	result := DB.Select("video_id").Where("`user_id` = ? and `is_deleted` = 0", userId).Find(&favorites)
 
@@ -70,11 +70,15 @@ func QueryFavorVideosByUserId(userId int64) []VideoList {
 
 	var i int64
 	for i = 0; i < n; i++ {
+		var video Video
+		var userInfo UserInfo
 		DB.Select("id", "user_id", "play_url", "cover_url", "favorite_count", "comment_count", "title").Where("id = ?", favorites[i].VideoId).Find(&video)
-		DB.First(&userInfo, video.UserId)
+		DB.Where("id = ?", video.UserId).Find(&userInfo)
+		flag = IsFollow(userId, video.UserId)
+		userInfos = SaveUserInfos(userInfo, flag)
 
 		videoList[i].Id = video.Id
-		videoList[i].Author = userInfo
+		videoList[i].Author = userInfos
 		videoList[i].PlayUrl = video.PlayUrl
 		videoList[i].CoverUrl = video.CoverUrl
 		videoList[i].FavoriteCount = video.FavoriteCount

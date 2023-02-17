@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"MinimalistTiktok/service"
+	"MinimalistTiktok/config"
 	"MinimalistTiktok/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -45,7 +45,7 @@ func Auth() gin.HandlerFunc {
 }
 
 func handleError(msg string, c *gin.Context) {
-	c.JSON(http.StatusOK, service.Response{
+	c.JSON(http.StatusOK, config.Response{
 		StatusCode: 1,
 		StatusMsg:  msg,
 	})

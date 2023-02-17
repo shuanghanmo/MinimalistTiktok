@@ -9,13 +9,13 @@ import (
 	"strconv"
 )
 
-func FavoriteAction(c *gin.Context) {
+func RelationAction(c *gin.Context) {
 	token := c.Query("token")
-	videoIdStr := c.Query("video_id")
+	toUserIdStr := c.Query("to_user_id")
 	info, _ := ConcurrentMap.Load(token)
 	userInfo := info.(dao.UserInfo)
 	userId := userInfo.ID
-	videoId, err := strconv.ParseInt(videoIdStr, 10, 64)
+	toUserId, err := strconv.ParseInt(toUserIdStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
@@ -27,7 +27,7 @@ func FavoriteAction(c *gin.Context) {
 	actionTypestr := c.Query("action_type")
 	actionType, err := strconv.ParseInt(actionTypestr, 10, 64)
 	if actionType == 1 {
-		err := dao.PlusOneFavorByUserIdAndVideoId(userId, videoId)
+		err := dao.FollowAction(userId, toUserId)
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusOK, config.Response{
@@ -38,10 +38,10 @@ func FavoriteAction(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 0,
-			StatusMsg:  "点赞成功！",
+			StatusMsg:  "关注成功",
 		})
 	} else {
-		err := dao.MinusOneFavorByUserIdAndVideoId(userId, videoId)
+		err := dao.UnFollowAction(userId, toUserId)
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusOK, config.Response{
@@ -52,21 +52,7 @@ func FavoriteAction(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 0,
-			StatusMsg:  "取消点赞成功！",
+			StatusMsg:  "取消关注成功！",
 		})
 	}
-}
-
-func FavoriteList(c *gin.Context) {
-	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
-
-	var videoList = dao.QueryFavorVideosByUserId(userId)
-
-	c.JSON(http.StatusOK, config.VideoListResponse{
-		Response: config.Response{
-			StatusCode: 0,
-			StatusMsg:  "喜欢列表已刷新",
-		},
-		VideoList: videoList,
-	})
 }

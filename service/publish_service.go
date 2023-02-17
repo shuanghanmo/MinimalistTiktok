@@ -12,11 +12,6 @@ import (
 	"strings"
 )
 
-type VideoListResponse struct {
-	Response
-	VideoList []dao.VideoList `json:"video_list"`
-}
-
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")
@@ -32,7 +27,7 @@ func Publish(c *gin.Context) {
 	data, err := c.FormFile("data")
 
 	if err != nil {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -50,7 +45,7 @@ func Publish(c *gin.Context) {
 
 	saveFile := filepath.Join(config.VideosImagePath, finalName)
 	if err = c.SaveUploadedFile(data, saveFile); err != nil {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -71,12 +66,12 @@ func Publish(c *gin.Context) {
 	}
 	err = dao.NewVideoDaoInstance().AddVideo(video)
 	if err == nil {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 0,
 			StatusMsg:  filename + " uploaded successfully",
 		})
 	} else {
-		c.JSON(http.StatusInternalServerError, Response{
+		c.JSON(http.StatusInternalServerError, config.Response{
 			StatusCode: 1,
 			StatusMsg:  filename + " uploaded Failed",
 		})
@@ -90,8 +85,8 @@ func PublishList(c *gin.Context) {
 
 	var videoList = dao.QueryPublishListByUserId(userId)
 
-	c.JSON(http.StatusOK, VideoListResponse{
-		Response: Response{
+	c.JSON(http.StatusOK, config.VideoListResponse{
+		Response: config.Response{
 			StatusCode: 0,
 			StatusMsg:  "发布列表已刷新",
 		},
