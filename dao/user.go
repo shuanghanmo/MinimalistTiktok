@@ -37,10 +37,10 @@ func UpdateUser(user *User) {
 	DB.Model(&User{}).Updates(user)
 }
 
-func QueryById(id int64) *User {
+func QueryById(id int64) (*User, error) {
 	var user User
 	DB.First(&user, id)
-	return &user
+	return &user, nil
 }
 
 func DeleteUser(id int64) {

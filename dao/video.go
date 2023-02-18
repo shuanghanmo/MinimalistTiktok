@@ -53,6 +53,23 @@ func (*VideoDao) AddVideo(video Video) error {
 	return err
 }
 
+func (*VideoDao) IncrCommentCount(videoId int64) {
+	var video Video
+	DB.First(&video, videoId)
+	DB.Model(&video).Update("comment_count", video.CommentCount+1)
+}
+
+func (*VideoDao) DecrCommentCount(videoId int64) {
+	var video Video
+	DB.First(&video, videoId)
+	DB.Model(&video).Update("comment_count", video.CommentCount-1)
+}
+func (*VideoDao) SelectById(videoId int64) (Video, error) {
+	var video Video
+	DB.First(&video, videoId)
+	return video, nil
+}
+
 func QueryPublishListByUserId(userId int64) []VideoList {
 	var videos []Video
 	var userInfo UserInfo

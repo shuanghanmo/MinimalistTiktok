@@ -2,6 +2,7 @@ package main
 
 import (
 	"MinimalistTiktok/config"
+	"MinimalistTiktok/middleware"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"os"
@@ -24,7 +25,7 @@ func main() {
 	Init()
 	r := gin.Default()
 	// 使用权限验证中间件
-	//r.Use(middleware.Auth())
+	r.Use(middleware.Auth())
 	InitRouter(r)
 	err := r.Run(":" + config.ServerPort)
 	if err != nil {

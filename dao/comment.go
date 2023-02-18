@@ -1,11 +1,14 @@
 package dao
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Comment struct {
 	Id         int64     `gorm:"column:id" json:"id,omitempty"`
 	UserId     int64     `gorm:"column:user_id" json:"user_id"`
-	VideoId    int64     `gorm:"column:user_id" json:"video_id"`
+	VideoId    int64     `gorm:"column:video_id" json:"video_id"`
 	Content    string    `gorm:"column:content" json:"content,omitempty"`
 	CreateDate time.Time `gorm:"column:create_date" json:"create_date,omitempty"`
 }
@@ -19,6 +22,39 @@ type CommentList struct {
 
 func (c Comment) TableName() string {
 	return "tb_comment"
+}
+
+type CommentDao struct {
+}
+
+var commentDao *CommentDao
+
+func NewCommentDaoInstance() *CommentDao {
+	return commentDao
+}
+
+func (*CommentDao) AddComment(comment *Comment) error {
+	err := DB.Create(&comment).Error
+	if err != nil {
+		fmt.Println("insert video into db ERROR")
+	}
+	return err
+}
+func (*CommentDao) SelectCommentByID(commentId int64) (*Comment, error) {
+	var comment Comment
+	err := DB.Table("comments").Where("comment_id = ?", commentId).First(&comment).Error
+	if err != nil {
+		fmt.Println("评论id不存在" + err.Error())
+	}
+	return &comment, err
+}
+
+func (*CommentDao) DeleteComment(comment *Comment) error {
+	err := DB.Delete(comment).Error
+	if err != nil {
+		fmt.Println("评论删除失败 " + err.Error())
+	}
+	return err
 }
 
 func QueryCommentList(userId int64, videoId int64) []CommentList {

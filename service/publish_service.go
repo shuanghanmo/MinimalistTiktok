@@ -17,7 +17,7 @@ func Publish(c *gin.Context) {
 	token := c.PostForm("token")
 	_, claim, err := utils.ParseToken(token)
 	if err != nil {
-		c.JSON(http.StatusOK, Response{
+		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 1,
 			StatusMsg:  "token error",
 		})
