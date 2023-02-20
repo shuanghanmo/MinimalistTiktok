@@ -74,5 +74,15 @@ func FollowList(c *gin.Context) {
 }
 
 func FollowerList(c *gin.Context) {
+	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
 
+	var followerList = dao.QueryFollowerByUserId(userId)
+
+	c.JSON(http.StatusOK, config.UserListResponse{
+		Response: config.Response{
+			StatusCode: 0,
+			StatusMsg:  "粉丝列表已刷新",
+		},
+		UserList: followerList,
+	})
 }

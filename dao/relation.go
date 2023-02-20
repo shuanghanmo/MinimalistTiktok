@@ -54,10 +54,10 @@ func UnFollowAction(userId int64, toUserId int64) error {
 	})
 }
 func QueryFollowByUserId(userId int64) []UserInfos {
-	var toUserIds []int64
+	var relations []Relation
 	// 查询关注的id
-	result := DB.Select("to_user_id",
-		"user_id").Where("user_id = ?", userId).Find(&toUserIds)
+
+	result := DB.Table("tb_relation").Where("user_id = ? ", userId).Find(&relations)
 
 	n := result.RowsAffected
 	if n == 0 {
@@ -65,11 +65,10 @@ func QueryFollowByUserId(userId int64) []UserInfos {
 	}
 	userList := make([]UserInfos, 0)
 
-	for _, touserId := range toUserIds {
+	for _, relation := range relations {
 		var userInfo UserInfo
-		DB.Where("id = ?", touserId).Find(&userInfo)
-		flag := IsFollow(userId, touserId)
-		userInfos := SaveUserInfos(userInfo, flag)
+		DB.Table("tb_user_info").Where("id = ?", relation.ToUserId).Find(&userInfo)
+		userInfos := SaveUserInfos(userInfo, true)
 		userList = append(userList, userInfos)
 	}
 
@@ -77,8 +76,25 @@ func QueryFollowByUserId(userId int64) []UserInfos {
 
 }
 
-func SelectFollowerByID(userId int64, toUserId int64) error {
-	return nil
+func QueryFollowerByUserId(UserId int64) []UserInfos {
+	var relations []Relation
+	result := DB.Table("tb_relation").Where("to_user_id = ? ", UserId).Find(&relations)
+
+	n := result.RowsAffected
+	if n == 0 {
+		return nil
+	}
+	userList := make([]UserInfos, 0)
+
+	for _, relation := range relations {
+		var userInfo UserInfo
+		DB.Table("tb_user_info").Where("id = ?", relation.UserId).Find(&userInfo)
+		flag := IsFollow(UserId, relation.UserId)
+		userInfos := SaveUserInfos(userInfo, flag)
+		userList = append(userList, userInfos)
+	}
+
+	return userList
 }
 
 func IsFollow(userId int64, toUserId int64) bool {
