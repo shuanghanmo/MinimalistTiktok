@@ -42,7 +42,7 @@ func (*CommentDao) AddComment(comment *Comment) error {
 }
 func (*CommentDao) SelectCommentByID(commentId int64) (*Comment, error) {
 	var comment Comment
-	err := DB.Table("comments").Where("comment_id = ?", commentId).First(&comment).Error
+	err := DB.Table("tb_comment").Where("id = ?", commentId).First(&comment).Error
 	if err != nil {
 		fmt.Println("评论id不存在" + err.Error())
 	}

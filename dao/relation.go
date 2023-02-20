@@ -1,6 +1,8 @@
 package dao
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Relation struct {
 	UserId    int64 `gorm:"column:user_id" json:"user_id,omitempty"`
@@ -50,6 +52,33 @@ func UnFollowAction(userId int64, toUserId int64) error {
 		}
 		return nil
 	})
+}
+func QueryFollowByUserId(userId int64) []UserInfos {
+	var toUserIds []int64
+	// 查询关注的id
+	result := DB.Select("to_user_id",
+		"user_id").Where("user_id = ?", userId).Find(&toUserIds)
+
+	n := result.RowsAffected
+	if n == 0 {
+		return nil
+	}
+	userList := make([]UserInfos, 0)
+
+	for _, touserId := range toUserIds {
+		var userInfo UserInfo
+		DB.Where("id = ?", touserId).Find(&userInfo)
+		flag := IsFollow(userId, touserId)
+		userInfos := SaveUserInfos(userInfo, flag)
+		userList = append(userList, userInfos)
+	}
+
+	return userList
+
+}
+
+func SelectFollowerByID(userId int64, toUserId int64) error {
+	return nil
 }
 
 func IsFollow(userId int64, toUserId int64) bool {

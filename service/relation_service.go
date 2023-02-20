@@ -56,3 +56,23 @@ func RelationAction(c *gin.Context) {
 		})
 	}
 }
+
+func FollowList(c *gin.Context) {
+
+	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
+
+	var followList = dao.QueryFollowByUserId(userId)
+
+	c.JSON(http.StatusOK, config.UserListResponse{
+		Response: config.Response{
+			StatusCode: 0,
+			StatusMsg:  "关注列表已刷新",
+		},
+		UserList: followList,
+	})
+
+}
+
+func FollowerList(c *gin.Context) {
+
+}

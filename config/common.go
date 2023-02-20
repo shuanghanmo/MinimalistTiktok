@@ -12,6 +12,11 @@ type VideoListResponse struct {
 	VideoList []dao.VideoList `json:"video_list"`
 }
 
+type UserListResponse struct {
+	Response
+	UserList []dao.UserInfos `json:"user_list"`
+}
+
 type User struct {
 	Id            int64  `json:"id,omitempty"`
 	Name          string `json:"name,omitempty"`
