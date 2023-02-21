@@ -7,9 +7,9 @@ type Response struct {
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-type VideoListResponse struct {
+type VideoResponse struct {
 	Response
-	VideoList []dao.VideoList `json:"video_list"`
+	Video []dao.Video `json:"video_list"`
 }
 
 type CommentListResponse struct {

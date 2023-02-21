@@ -62,11 +62,11 @@ func FavoriteList(c *gin.Context) {
 
 	var videoList = dao.QueryFavorVideosByUserId(userId)
 
-	c.JSON(http.StatusOK, config.VideoListResponse{
+	c.JSON(http.StatusOK, config.VideoResponse{
 		Response: config.Response{
 			StatusCode: 0,
 			StatusMsg:  "喜欢列表已刷新",
 		},
-		VideoList: videoList,
+		Video: videoList,
 	})
 }

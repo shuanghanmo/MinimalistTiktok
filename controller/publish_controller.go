@@ -14,3 +14,7 @@ func Publish(c *gin.Context) {
 func PublishList(c *gin.Context) {
 	service.PublishList(c)
 }
+
+func Feed(c *gin.Context) {
+	service.Feed(c)
+}

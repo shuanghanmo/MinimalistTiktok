@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Publish check token then save upload file to public directory
@@ -76,13 +77,34 @@ func Publish(c *gin.Context) {
 func PublishList(c *gin.Context) {
 	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
 
-	var videoList = dao.QueryPublishListByUserId(userId)
+	var video = dao.QueryPublishListByUserId(userId)
 
-	c.JSON(http.StatusOK, config.VideoListResponse{
+	c.JSON(http.StatusOK, config.VideoResponse{
 		Response: config.Response{
 			StatusCode: 0,
 			StatusMsg:  "发布列表已刷新",
 		},
-		VideoList: videoList,
+		Video: video,
+	})
+}
+
+func Feed(c *gin.Context) {
+	userId, _ := strconv.ParseInt(c.Query("user_id"), 10, 64) //string->int64
+
+	rawTimestamp := c.Query("latest_time")
+	var latestTime time.Time
+	intTime, err := strconv.ParseInt(rawTimestamp, 10, 64)
+	if err != nil {
+		latestTime = time.Unix(0, intTime*1e6) //注意：前端传来的时间戳是以ms为单位的
+	}
+
+	var videoList = dao.QueryVideoListByLimitAndTime(userId, 30, latestTime)
+
+	c.JSON(http.StatusOK, config.VideoResponse{
+		Response: config.Response{
+			StatusCode: 0,
+			StatusMsg:  "视频列表已刷新",
+		},
+		Video: videoList,
 	})
 }

@@ -58,7 +58,7 @@ func IsFavorVideo(userId int64, videoId int64) bool {
 }
 
 // 通过userId查询点赞视频列表
-func QueryFavorVideosByUserId(userId int64) []VideoList {
+func QueryFavorVideosByUserId(userId int64) []Video {
 	var favorites []Favorite
 	var userInfos UserInfos
 	var flag bool
@@ -66,7 +66,7 @@ func QueryFavorVideosByUserId(userId int64) []VideoList {
 	result := DB.Select("video_id").Where("`user_id` = ? and `is_deleted` = 0", userId).Find(&favorites)
 
 	n := result.RowsAffected
-	videoList := make([]VideoList, n)
+	videoList := make([]Video, n)
 
 	var i int64
 	for i = 0; i < n; i++ {
