@@ -14,17 +14,6 @@ import (
 
 var ConcurrentMap = sync.Map{}
 
-type UserLoginResponse struct {
-	config.Response
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token"`
-}
-
-type UserInfoResponse struct {
-	config.Response
-	dao.UserInfo `json:"user"`
-}
-
 func Login(c *gin.Context) {
 	username := c.Query("username")
 	password := c.Query("password")
@@ -41,7 +30,7 @@ func Login(c *gin.Context) {
 	token, _ := utils.Award(user.ID)
 	put(token, userInfo)
 	// 保存用户对应的信息
-	c.JSON(http.StatusOK, UserLoginResponse{
+	c.JSON(http.StatusOK, config.UserLoginResponse{
 		Response: config.Response{StatusCode: 0, StatusMsg: "登录成功！"},
 		UserId:   user.ID,
 		Token:    token,
@@ -98,7 +87,7 @@ func Register(c *gin.Context) {
 	token, _ := utils.Award(user.ID)
 	// 保存用户对应的信息
 	put(token, userInfo)
-	c.JSON(http.StatusOK, UserLoginResponse{
+	c.JSON(http.StatusOK, config.UserLoginResponse{
 		Response: config.Response{StatusCode: 0, StatusMsg: "注册成功！"},
 		UserId:   user.ID,
 		Token:    token,
@@ -109,7 +98,7 @@ func GetUserInfo(c *gin.Context) {
 	token := c.Query("token")
 	info, _ := ConcurrentMap.Load(token)
 	userInfo := info.(dao.UserInfo)
-	c.JSON(http.StatusOK, UserInfoResponse{
+	c.JSON(http.StatusOK, config.UserInfoResponse{
 		Response: config.Response{StatusCode: 0, StatusMsg: "获取信息成功！"},
 		UserInfo: userInfo,
 	})

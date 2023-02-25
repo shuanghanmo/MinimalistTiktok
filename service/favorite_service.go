@@ -10,6 +10,8 @@ import (
 )
 
 func FavoriteAction(c *gin.Context) {
+	var msg string
+
 	token := c.Query("token")
 	videoIdStr := c.Query("video_id")
 	info, _ := ConcurrentMap.Load(token)
@@ -30,11 +32,9 @@ func FavoriteAction(c *gin.Context) {
 		err := dao.PlusOneFavorByUserIdAndVideoId(userId, videoId)
 		if err != nil {
 			log.Println(err)
-			c.JSON(http.StatusOK, config.Response{
-				StatusCode: 1,
-				StatusMsg:  "发生异常错误，请稍后访问！",
-			})
-			return
+			msg = "发生异常错误，请稍后访问！"
+		} else {
+			msg = "点赞成功！"
 		}
 		c.JSON(http.StatusOK, config.Response{
 			StatusCode: 0,
@@ -44,17 +44,15 @@ func FavoriteAction(c *gin.Context) {
 		err := dao.MinusOneFavorByUserIdAndVideoId(userId, videoId)
 		if err != nil {
 			log.Println(err)
-			c.JSON(http.StatusOK, config.Response{
-				StatusCode: 1,
-				StatusMsg:  "发生异常错误，请稍后访问！",
-			})
-			return
+			msg = "发生异常错误，请稍后访问！"
+		} else {
+			msg = "取消点赞成功！"
 		}
-		c.JSON(http.StatusOK, config.Response{
-			StatusCode: 0,
-			StatusMsg:  "取消点赞成功！",
-		})
 	}
+	c.JSON(http.StatusOK, config.Response{
+		StatusCode: 0,
+		StatusMsg:  msg,
+	})
 }
 
 func FavoriteList(c *gin.Context) {

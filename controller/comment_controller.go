@@ -6,7 +6,7 @@ import (
 )
 
 func CommentAction(c *gin.Context) {
-	//TODO 评论操作
+	service.CommentAction(c)
 }
 
 func CommentList(c *gin.Context) {

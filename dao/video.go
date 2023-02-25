@@ -74,10 +74,10 @@ func QueryPublishListByUserId(userId int64) []Video {
 func QueryVideoListByLimitAndTime(userId int64, limit int, latestTime time.Time) []Video {
 	var videoList []Video
 
-	result := DB.Model(&Video{}).Where("created_at<?", latestTime).
+	result := DB.Model(&Video{}).Where("created_at < ?", latestTime).
 		Order("created_at ASC").Limit(limit).
 		Select([]string{"id", "user_id", "play_url", "cover_url", "favorite_count", "comment_count", "title", "created_at"}).
-		Find(videoList)
+		Find(&videoList)
 	n := result.RowsAffected
 	if n == 0 {
 		return nil
