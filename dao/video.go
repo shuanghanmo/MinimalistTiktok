@@ -9,7 +9,7 @@ import (
 type Video struct {
 	Id            int64     `gorm:"column:id" json:"id,omitempty"`
 	UserId        int64     `gorm:"column:user_id" json:"-"`
-	Author        UserInfos `gorm:"-" json:"author"`
+	Author        UserInfo  `gorm:"-" json:"author"`
 	PlayUrl       string    `gorm:"column:play_url" json:"play_url,omitempty"`
 	CoverUrl      string    `gorm:"column:cover_url" json:"cover_url,omitempty"`
 	FavoriteCount int64     `gorm:"column:favorite_count" json:"favorite_count,omitempty"`
@@ -54,13 +54,16 @@ func QueryPublishListByUserId(userId int64) []Video {
 		Where("user_id = ?", userId).
 		Find(&videoList)
 	DB.First(&userInfo, userId)
-	userInfos := SaveUserInfos(userInfo, true)
+	userInfo.IsFollow = true
 	n := result.RowsAffected
+	if n == 0 {
+		return nil
+	}
 
 	var i int64
 
 	for i = 0; i < n; i++ {
-		videoList[i].Author = userInfos
+		videoList[i].Author = userInfo
 		videoList[i].IsFavorite = IsFavorVideo(userId, videoList[i].Id)
 	}
 
@@ -76,15 +79,18 @@ func QueryVideoListByLimitAndTime(userId int64, limit int, latestTime time.Time)
 		Select([]string{"id", "user_id", "play_url", "cover_url", "favorite_count", "comment_count", "title", "created_at"}).
 		Find(videoList)
 	n := result.RowsAffected
+	if n == 0 {
+		return nil
+	}
 
 	var i int64
 	for i = 0; i < n; i++ {
 		var userInfo UserInfo
 		DB.Where("id = ?", videoList[i].UserId).Find(&userInfo)
 		flag := IsFollow(userId, videoList[i].UserId)
-		userInfos := SaveUserInfos(userInfo, flag)
+		userInfo.IsFollow = flag
 
-		videoList[i].Author = userInfos
+		videoList[i].Author = userInfo
 		videoList[i].IsFavorite = IsFavorVideo(userId, videoList[i].Id)
 	}
 

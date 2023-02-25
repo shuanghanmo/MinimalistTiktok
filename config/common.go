@@ -7,12 +7,12 @@ type Response struct {
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-type VideoResponse struct {
+type VideoListResponse struct {
 	Response
 	Video []dao.Video `json:"video_list"`
 }
 
 type CommentListResponse struct {
 	Response
-	CommentList []dao.CommentList `json:"comment_list"`
+	CommentList []dao.Comment `json:"comment_list"`
 }

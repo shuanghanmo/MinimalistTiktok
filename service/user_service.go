@@ -54,6 +54,7 @@ func put(key string, userInfo *dao.UserInfo) {
 		userInfo.Name,
 		userInfo.FollowCount,
 		userInfo.FollowerCount,
+		userInfo.IsFollow,
 	}
 	ConcurrentMap.Store(key, userCache)
 }

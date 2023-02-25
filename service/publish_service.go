@@ -79,7 +79,7 @@ func PublishList(c *gin.Context) {
 
 	var video = dao.QueryPublishListByUserId(userId)
 
-	c.JSON(http.StatusOK, config.VideoResponse{
+	c.JSON(http.StatusOK, config.VideoListResponse{
 		Response: config.Response{
 			StatusCode: 0,
 			StatusMsg:  "发布列表已刷新",
@@ -100,7 +100,7 @@ func Feed(c *gin.Context) {
 
 	var videoList = dao.QueryVideoListByLimitAndTime(userId, 30, latestTime)
 
-	c.JSON(http.StatusOK, config.VideoResponse{
+	c.JSON(http.StatusOK, config.VideoListResponse{
 		Response: config.Response{
 			StatusCode: 0,
 			StatusMsg:  "视频列表已刷新",
